@@ -13,8 +13,8 @@ const bootSteps = [
     ["OK", "Loaded Linux knowledge base"],
     ["OK", "Mounted /dev/penguins"],
     ["OK", "Started systemd-udevd kernel device manager"],
-    ["OK", "Reached YouTube API target"],
-    ["OK", "Started Discord Community daemon"],
+    ["OK", "Reached  API target"],
+    ["OK", "Started Community "],
     ["WARN", "rm -rf / was prevented (you are welcome)"],
     ["OK", "Reached multi-user.target"],
     ["OK", "Data Flow ready."]
@@ -80,27 +80,6 @@ const terminalContent =
 const terminalPromptLine =
     terminalInput.closest(".terminal-prompt-line");
 
-const terminalCommands = {
-    help: `Comandos disponíveis:
-  help                    - mostra esta mensagem
-    about                   - sobre o phsystem
-  neofetch                - informações do site
-  skills                  - tecnologias utilizadas
-  links                   - links importantes
-  fortune                 - citação aleatória
-  cowsay <texto>          - vaca ASCII com mensagem
-  figlet <texto>          - texto em ASCII art
-  tux                     - pinguim ASCII
-  whoami                  - quem é o Pedro?
-  ls                      - lista arquivos do site
-  date                    - data e hora atual
-  uptime                  - tempo desde que o site abriu
-  ping flowdedados.com    - ping (fake)
-  cat readme.txt          - bio em formato readme
-  rm -rf /                - ...`,
-    whoami: "Pedro"
-};
-
 function appendTerminalOutput(text) {
     const output = document.createElement("pre");
     output.className = "terminal-output";
@@ -108,24 +87,6 @@ function appendTerminalOutput(text) {
     terminalContent.insertBefore(output, terminalPromptLine);
     terminalContent.scrollTop = terminalContent.scrollHeight;
 }
-
-terminalInput.addEventListener("keydown", event => {
-    if (event.key !== "Enter") {
-        return;
-    }
-
-    const command = terminalInput.value.trim().toLowerCase();
-    terminalInput.value = "";
-
-    if (!command) {
-        return;
-    }
-
-    appendTerminalOutput(`ph@system:~$ ${command}`);
-    appendTerminalOutput(
-        terminalCommands[command] || `Comando não encontrado: ${command}`
-    );
-});
 
 function openTerminal() {
     terminalModal.classList.add("is-open");
@@ -168,6 +129,280 @@ themeButton.addEventListener("click", () => {
 
     lucide.createIcons();
 
+});
+
+
+/* =========================
+   TERMINAL - COMANDOS
+========================= */
+
+const bootTime = Date.now();
+
+const fortunes = [
+    "Um bom sysadmin nunca reinicia sem fazer backup antes.",
+    "Existem 10 tipos de pessoas: as que entendem binário e as que não.",
+    "O Linux é gratuito apenas se seu tempo não vale nada.",
+    "99 little bugs in the code, take one down, patch it around, 127 little bugs in the code.",
+    "sudo não te dá superpoderes, te dá mais responsabilidade.",
+    "A nuvem é só o computador de outra pessoa.",
+    "Ctrl+Z não desfaz decisões da vida real, infelizmente."
+];
+
+function cowsay(text) {
+    const msg = text || "Moo!";
+    const border = "_".repeat(msg.length + 2);
+    return ` ${border}
+< ${msg} >
+ ${"-".repeat(msg.length + 2)}
+        \\   ^__^
+         \\  (oo)\\_______
+            (__)\\       )\\/\\
+                ||----w |
+                ||     ||`;
+}
+
+const boldMap = {};
+"abcdefghijklmnopqrstuvwxyz".split("").forEach((c, i) => {
+    boldMap[c] = String.fromCodePoint(0x1D41A + i);
+    boldMap[c.toUpperCase()] = String.fromCodePoint(0x1D400 + i);
+});
+"0123456789".split("").forEach((c, i) => {
+    boldMap[c] = String.fromCodePoint(0x1D7CE + i);
+});
+
+function figlet(text) {
+    if (!text) return "uso: figlet <texto>";
+    return text.split("").map(c => boldMap[c] || c).join("");
+}
+
+const tuxArt = `    .--.
+   |o_o |
+   |:_/ |
+  //   \\ \\
+ (|     | )
+/'\\_   _/\`\\
+\\___)=(___/`;
+
+const readmeText = `# Pedro (PH)
+
+Estudante do último ano do ensino médio em Fortaleza, CE.
+Curtindo Linux, servidores, homelab e programação.
+
+Feito com tecnologia e café ☕`;
+
+function uptimeString() {
+    const seconds = Math.floor((Date.now() - bootTime) / 1000);
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}m ${s}s`;
+}
+
+function neofetchOutput() {
+    const uaData = navigator.userAgentData;
+    const platform = (uaData && uaData.platform) || navigator.platform || "Desconhecido";
+    const cores = navigator.hardwareConcurrency || "?";
+    const mem = navigator.deviceMemory ? `${navigator.deviceMemory} GB` : "N/D";
+    const res = `${screen.width}x${screen.height}`;
+    const lang = navigator.language;
+
+    return `        _nnnn_
+       dGGGGMMb     ph@system
+      @p~qp~~qMb    ----------
+      M|@||@) M|    OS: ${platform}
+      @,----.JM|    Kernel: JavaScript V8
+     JS^\\__/  qKKKKK Uptime: ${uptimeString()}
+    dZP        qKKKb CPU Threads: ${cores}
+   dZP          qKKKb RAM (aprox.): ${mem}
+  dZK          qKKKKK Resolução: ${res}
+  ZK\\         KKKKKKK Idioma: ${lang}
+  KKKKM       KKKKKKK Shell: ph-terminal 1.0
+KKKKKKK.       KKKKKKK`;
+}
+
+function pingSim(host) {
+    const target = host || "flowdedados.com";
+    appendTerminalOutput(`PING ${target}: 56 data bytes`);
+    let i = 0;
+    const interval = setInterval(() => {
+        i++;
+        const ms = (Math.random() * 30 + 5).toFixed(1);
+        appendTerminalOutput(`64 bytes from ${target}: icmp_seq=${i} ttl=57 time=${ms} ms`);
+        if (i >= 4) {
+            clearInterval(interval);
+            appendTerminalOutput(`--- ${target} ping statistics ---
+4 packets transmitted, 4 received, 0% packet loss`);
+        }
+    }, 500);
+}
+
+function htopSim() {
+    const pre = document.createElement("pre");
+    pre.className = "terminal-output";
+    terminalContent.insertBefore(pre, terminalPromptLine);
+
+    const procs = ["chrome", "systemd", "node", "sshd", "bash", "Xorg", "code", "docker"];
+    let frame = 0;
+
+    const interval = setInterval(() => {
+        frame++;
+        const cpuTotal = (Math.random() * 40 + 5).toFixed(1);
+        const memTotal = (Math.random() * 60 + 20).toFixed(1);
+
+        let out = `Tasks: ${Math.floor(Math.random() * 50 + 120)} total   CPU: ${cpuTotal}%   Mem: ${memTotal}%
+`;
+        out += "PID    USER   CPU%   MEM%   COMMAND\n";
+
+        procs.forEach((name, idx) => {
+            const cpu = (Math.random() * 15).toFixed(1);
+            const mem = (Math.random() * 10).toFixed(1);
+            out += `${1000 + idx}   ph     ${cpu.padStart(5)}  ${mem.padStart(5)}  ${name}\n`;
+        });
+
+        pre.textContent = out;
+        terminalContent.scrollTop = terminalContent.scrollHeight;
+
+        if (frame >= 6) {
+            clearInterval(interval);
+            appendTerminalOutput("(htop encerrado)");
+        }
+    }, 500);
+}
+
+/* Modo Matrix */
+function toggleMatrixMode() {
+    if (document.getElementById("matrixOverlay")) return;
+
+    const overlay = document.createElement("canvas");
+    overlay.id = "matrixOverlay";
+    document.body.appendChild(overlay);
+    overlay.width = window.innerWidth;
+    overlay.height = window.innerHeight;
+
+    const mctx = overlay.getContext("2d");
+    const chars = "アイウエオカキクケコ01ABCDEFPHフローデ";
+    const fontSize = 16;
+    const columns = Math.floor(overlay.width / fontSize);
+    const drops = new Array(columns).fill(1);
+
+    function draw() {
+        mctx.fillStyle = "rgba(0, 0, 0, 0.08)";
+        mctx.fillRect(0, 0, overlay.width, overlay.height);
+        mctx.fillStyle = "#00ff6a";
+        mctx.font = fontSize + "px monospace";
+
+        drops.forEach((y, i) => {
+            const char = chars[Math.floor(Math.random() * chars.length)];
+            mctx.fillText(char, i * fontSize, y * fontSize);
+            if (y * fontSize > overlay.height && Math.random() > 0.975) {
+                drops[i] = 0;
+            }
+            drops[i]++;
+        });
+    }
+
+    const matrixInterval = setInterval(draw, 40);
+
+    function exitMatrix() {
+        clearInterval(matrixInterval);
+        overlay.remove();
+        document.removeEventListener("keydown", exitMatrix);
+        document.removeEventListener("click", exitMatrix);
+    }
+
+    document.addEventListener("keydown", exitMatrix);
+    document.addEventListener("click", exitMatrix);
+}
+
+function toggleHackerMode() {
+    document.body.classList.toggle("hacker-mode");
+    return document.body.classList.contains("hacker-mode")
+        ? "Modo hacker ATIVADO. Digite 'hackermode' de novo pra sair."
+        : "Modo hacker desativado.";
+}
+
+const terminalCommands = {
+    help: `Comandos disponíveis:
+  help                    - mostra esta mensagem
+  about                   - sobre o phsystem
+  neofetch                - informações do sistema (navegador)
+  htop                    - monitor de processos animado
+  matrix                  - modo matrix (aperte qualquer tecla pra sair)
+  hackermode              - liga/desliga o tema hacker verde
+  skills                  - tecnologias utilizadas
+  links                   - links importantes
+  fortune                 - citação aleatória
+  cowsay <texto>          - vaca ASCII com mensagem
+  figlet <texto>          - texto estilizado
+  tux                     - pinguim ASCII
+  whoami                  - quem é o Pedro?
+  ls                      - lista arquivos do site
+  date                    - data e hora atual
+  uptime                  - tempo desde que o site abriu
+  ping <host>             - ping (simulado)
+  cat readme.txt          - bio em formato readme
+  rm -rf /                - ...`,
+    about: "phsystem v1.0 — um terminal falso feito com HTML, CSS e JS puro, por Pedro.",
+    whoami: "Pedro",
+    skills: "Linux, Bash, HTML, CSS, JavaScript, Git/GitHub, redes e servidores.",
+    links: "Currículo | GitHub: github.com/Pedro8678 | Instagram: @pedroo.hg0",
+    tux: tuxArt,
+    ls: "index.html  style.css  script.js  README.md",
+    date: () => new Date().toString(),
+    uptime: () => `Site ativo há ${uptimeString()}`,
+    fortune: () => fortunes[Math.floor(Math.random() * fortunes.length)],
+    neofetch: () => neofetchOutput(),
+    "cat readme.txt": readmeText,
+    "rm -rf /": "Permissão negada. Boa tentativa 😄",
+    matrix: () => { toggleMatrixMode(); return "Entrando na Matrix..."; },
+    htop: () => { htopSim(); return null; },
+    hackermode: () => toggleHackerMode(),
+    sudo: "Você não está no arquivo sudoers. Este incidente será reportado.",
+    exit: "Este não é esse tipo de terminal 😉",
+    "42": "A resposta para a vida, o universo e tudo mais.",
+    konami: "↑ ↑ ↓ ↓ ← → ← → B A — você desbloqueou nada, mas parabéns!"
+};
+
+function runCommand(raw) {
+    const trimmed = raw.trim();
+    const lower = trimmed.toLowerCase();
+
+    if (lower.startsWith("cowsay ")) {
+        return cowsay(trimmed.slice(7));
+    }
+    if (lower.startsWith("figlet ")) {
+        return figlet(trimmed.slice(7));
+    }
+    if (lower.startsWith("ping")) {
+        const host = trimmed.slice(4).trim();
+        pingSim(host);
+        return null;
+    }
+
+    const entry = terminalCommands[lower];
+    if (entry === undefined) {
+        return `Comando não encontrado: ${trimmed}`;
+    }
+    return typeof entry === "function" ? entry() : entry;
+}
+
+terminalInput.addEventListener("keydown", event => {
+    if (event.key !== "Enter") {
+        return;
+    }
+
+    const command = terminalInput.value.trim();
+    terminalInput.value = "";
+
+    if (!command) {
+        return;
+    }
+
+    appendTerminalOutput(`ph@system:~$ ${command}`);
+
+    const result = runCommand(command);
+    if (result !== null) {
+        appendTerminalOutput(result);
+    }
 });
 
 
