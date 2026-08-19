@@ -1008,6 +1008,53 @@ body.light .icon-button {
 
 
 /* =========================
+   MODO HACKER
+========================= */
+
+body.hacker-mode {
+    --bg: #000900;
+    --card: #001a00;
+    --text: #00ff6a;
+    --border: #003d1a;
+
+    background: #000900;
+}
+
+body.hacker-mode * {
+    border-color: #00ff6a33 !important;
+}
+
+body.hacker-mode .terminal-content,
+body.hacker-mode .terminal-prompt,
+body.hacker-mode .boot-log {
+    color: #00ff6a !important;
+}
+
+body.hacker-mode .link-card,
+body.hacker-mode .terminal-window {
+    background: #001a00 !important;
+    border-color: #00ff6a55 !important;
+}
+
+
+/* =========================
+   MATRIX OVERLAY
+========================= */
+
+#matrixOverlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 200;
+
+    background: #000;
+
+    cursor: pointer;
+}
+
+
+/* =========================
    MOBILE
 ========================= */
 
