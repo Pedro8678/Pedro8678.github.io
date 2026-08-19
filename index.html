@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PH</title>
+
+    <meta
+        name="description"
+        content="PH - Tecnologia, Linux, servidores e programação."
+    >
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+
+<body>
+
+    <!-- CARREGAMENTO INICIAL -->
+
+    <div class="boot-screen" id="bootScreen" aria-live="polite">
+
+        <div class="boot-log" id="bootLog">
+            <span class="boot-cursor">_</span>
+        </div>
+
+    </div>
+
+    <!-- TERMINAL INTERATIVO -->
+
+    <div class="terminal-modal" id="terminalModal" aria-hidden="true">
+
+        <div class="terminal-window" role="dialog" aria-modal="true" aria-labelledby="terminalTitle">
+
+            <div class="terminal-header">
+                <div class="terminal-lights" aria-hidden="true">
+                    <span class="terminal-light close-light"></span>
+                    <span class="terminal-light minimize-light"></span>
+                    <span class="terminal-light maximize-light"></span>
+                </div>
+
+                <span class="terminal-title" id="terminalTitle">ph@system:~</span>
+
+                <button class="terminal-close" id="terminalClose" aria-label="Fechar terminal">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div class="terminal-content" id="terminalContent">
+                <p>Bem-vindo ao PHSystem! Digite "help" para ver os comandos.</p>
+                <div class="terminal-prompt-line">
+                    <span class="terminal-prompt">ph@system:~$</span>
+                    <input
+                        class="terminal-input"
+                        id="terminalInput"
+                        type="text"
+                        autocomplete="off"
+                        spellcheck="false"
+                        aria-label="Comando do terminal"
+                    >
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Fundo animado -->
+    <canvas id="particles"></canvas>
+
+    <div class="page">
+
+        <!-- BOTÕES SUPERIORES -->
+
+        <div class="top-buttons">
+
+            <button class="icon-button" id="codeButton">
+                <i data-lucide="terminal"></i>
+            </button>
+
+            <button class="icon-button" id="themeButton">
+                <i data-lucide="sun"></i>
+            </button>
+
+        </div>
+
+
+        <!-- PERFIL -->
+
+        <header class="profile">
+
+            <div class="avatar-wrapper">
+
+                <img
+                    src="https://i.pinimg.com/736x/6a/60/9a/6a609aac508e55e366d3bbe16b12c4d4.jpg"
+                    alt="Flow de Dados"
+                    class="avatar"
+                >
+
+                <span class="online"></span>
+
+            </div>
+
+            <h1>
+                PH<span></span>
+            </h1>
+
+            <div class="followers">
+
+                <i data-lucide="users"></i>
+
+                <span>1+ INSCRITOS</span>
+
+            </div>
+
+            <p class="typing">
+                Servidores<span>|</span>
+            </p>
+
+        </header>
+
+
+        <!-- LINKS -->
+
+        <section class="links">
+
+            <h2>
+                ALGUNS LINKS IMPORTANTES...
+            </h2>
+
+
+            <!-- CURRÍCULO -->
+
+            <a
+                href="#"
+                class="link-card"
+            >
+
+                <div class="link-icon cv">
+                    <i data-lucide="file-text"></i>
+                </div>
+
+                <div class="link-info">
+
+                    <strong>
+                        Currículo para TI
+                    </strong>
+
+                    <span>
+                        Curso rápido + template de CV
+                    </span>
+
+                </div>
+
+                <i
+                    data-lucide="chevron-right"
+                    class="arrow"
+                ></i>
+
+            </a>
+
+
+            <!-- GITHUB -->
+
+            <a
+                href="https://github.com/Pedro8678"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="link-card"
+>
+
+    <div class="link-icon github">
+        <i data-lucide="code-2"></i>
+    </div>
+
+    <div class="link-info">
+
+        <strong>
+            GitHub com meus Rices e Maluquices
+        </strong>
+
+        <span>
+            Confira meu GitHub em @Pedro
+        </span>
+
+    </div>
+
+    <i
+        data-lucide="chevron-right"
+        class="arrow"
+    ></i>
+
+</a>
+
+
+            <!-- INSTAGRAM -->
+
+            <a
+                href="https://www.instagram.com/pedroo.hg0/"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="link-card"
+>
+
+    <div class="link-icon instagram">
+        <i data-lucide="camera"></i>
+    </div>
+
+    <div class="link-info">
+
+        <strong>
+            Instagram
+        </strong>
+
+        <span>
+            Siga minhas atualizações diárias
+        </span>
+
+    </div>
+
+    <i
+        data-lucide="chevron-right"
+        class="arrow"
+    ></i>
+
+</a>
+
+
+        </section>
+
+
+        <!-- RODAPÉ -->
+
+        <footer>
+
+            <div class="footer-line"></div>
+
+            <p>
+                © 2026 Flow de Dados
+            </p>
+
+            <span>
+                Feito com tecnologia e café ☕
+            </span>
+
+        </footer>
+
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
