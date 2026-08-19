@@ -13,8 +13,8 @@ const bootSteps = [
     ["OK", "Loaded Linux knowledge base"],
     ["OK", "Mounted /dev/penguins"],
     ["OK", "Started systemd-udevd kernel device manager"],
-    ["OK", "Reached  API target"],
-    ["OK", "Started Community "],
+    ["OK", "Reached YouTube API target"],
+    ["OK", "Started Discord Community daemon"],
     ["WARN", "rm -rf / was prevented (you are welcome)"],
     ["OK", "Reached multi-user.target"],
     ["OK", "Data Flow ready."]
